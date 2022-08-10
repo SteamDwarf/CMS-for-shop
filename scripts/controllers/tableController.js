@@ -3,5 +3,6 @@ import { renderTable } from "../view/tableView.js";
 
 export const tableController = async() => {
     const goods = await getGoods();
-    renderTable(goods);
+    
+    if(goods) renderTable(goods);
 };
