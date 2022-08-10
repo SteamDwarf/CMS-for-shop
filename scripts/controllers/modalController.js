@@ -1,13 +1,10 @@
-import { formInputs, formTextarea, preview } from "../elems/elems.js";
+import { modalForm, preview } from "../elems/elems.js";
 import { hidePreview } from "./previewController.js";
 
 const openModal = (modal, modalOpenClass) => modal.classList.add(modalOpenClass);
 const closeModal = (modal, modalOpenClass) => {
-    formInputs.forEach(input => input.value = '');
-    formTextarea.value = '';
-
+    modalForm.reset(); 
     hidePreview(preview);
-
     modal.classList.remove(modalOpenClass);
 };
 
