@@ -1,18 +1,23 @@
-import { modalForm, preview } from "../elems/elems.js";
-import { hidePreview } from "./previewController.js";
+import triggerManager from "../state-manager/triggerManager.js";
+import { modal, modalCloseBtn, creatingProductBtn } from "../elems/elems.js";
 
-const openModal = (modal, modalOpenClass) => modal.classList.add(modalOpenClass);
-const closeModal = (modal, modalOpenClass) => {
-    modalForm.reset(); 
-    hidePreview(preview);
-    modal.classList.remove(modalOpenClass);
+const openModal = () => modal.classList.add('d-block');
+
+export const closeModal = () => {
+    modal.classList.remove('d-block');
 };
 
-export const modalController = ({modal, modalOpenBtn, modalCloseBtn, modalOpenClass}) => {
-    modalOpenBtn.addEventListener('click', () => openModal(modal, modalOpenClass));
+export const modalController = () => {
+    const {openCreatingProduct, openEditingProduct, closingModal} = triggerManager;
+
+    openCreatingProduct.subscribe(openModal);
+    openEditingProduct.subscribe(openModal);
+    closingModal.subscribe(closeModal);
+
+    creatingProductBtn.addEventListener('click', openCreatingProduct.trigger);
     modal.addEventListener('click', (e) => {
         if(e.target === modal || e.target === modalCloseBtn) {
-            closeModal(modal, modalOpenClass);
+            closingModal.trigger();
         }
     });
 }

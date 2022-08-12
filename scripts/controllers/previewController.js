@@ -1,19 +1,29 @@
+import triggerManager from "../state-manager/triggerManager.js";
 import { toBase64 } from "../utils/utils.js";
+import { preview } from "../elems/elems.js";
 
-const showPreview = (file, preview) => {
+export const showPreview = (file) => {
     preview.classList.add('d-block');
 
-    toBase64(file)
-    .then(image => preview.src = image)
-    .catch(error => console.error(error));
+    if(file.type) {
+        toBase64(file)
+        .then(image => preview.src = image)
+        .catch(error => console.error(error));
+
+        return;
+    }
+    
+    preview.src = file;
 }
 
-export const hidePreview = (preview) => {
+const hidePreview = () => {
     preview.removeAttribute('src');
     preview.classList.remove('d-block');
 }
 
-export const previewController = (imageInput, preview) => {
+export const previewController = (imageInput) => {
+    triggerManager.closingModal.subscribe(() => hidePreview(preview));
+
     imageInput.addEventListener('change', () => {
         if(imageInput.files[0]) {
             showPreview(imageInput.files[0], preview);

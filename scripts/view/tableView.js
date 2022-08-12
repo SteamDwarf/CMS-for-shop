@@ -1,7 +1,10 @@
+import { chooseProductItem, deleteProduct } from "../controllers/tableController.js";
 import { tableGoodsContainer } from "../elems/elems.js";
+import stateManger from "../state-manager/state-manager.js";
+import triggerManager from "../state-manager/triggerManager.js";
 import { currencyFormatRUB } from "../utils/utils.js";
 
-const createGoodsRow = ({id, title, category, price}) => {
+export const renderGoodsRow = ({id, title, category, price}) => {
     const goodsRow = document.createElement('tr');
 
     goodsRow.classList.add('table-row', 'table-goods-item');
@@ -20,11 +23,17 @@ const createGoodsRow = ({id, title, category, price}) => {
         </td>
     `;
 
-    return goodsRow;
+    tableGoodsContainer.append(goodsRow);
+    goodsRow.addEventListener('click', chooseProductItem);
+    goodsRow.querySelector('.btn-delete').addEventListener('click', () => deleteProduct(id));
 }
 
-export const renderTable = (goods) => {
-    const rows = goods.map(product => createGoodsRow(product));
+const renderTable = (goods) => {
+    tableGoodsContainer.innerHTML = '';
+    goods.forEach(product => renderGoodsRow(product));
+}
 
-    tableGoodsContainer.append(...rows);
+
+export const initTable = () => {
+    stateManger.goods.subscribe(renderTable);
 }
