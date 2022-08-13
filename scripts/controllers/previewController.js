@@ -1,6 +1,6 @@
-import triggerManager from "../state-manager/triggerManager.js";
 import { toBase64 } from "../utils/utils.js";
 import { preview } from "../elems/elems.js";
+import triggerManager from "../managers/triggerManager.js";
 
 export const showPreview = (file) => {
     preview.classList.add('d-block');

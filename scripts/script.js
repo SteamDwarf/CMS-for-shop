@@ -3,12 +3,14 @@ import { imageInput, preview } from './elems/elems.js';
 import { previewController } from './controllers/previewController.js';
 import { tableController } from './controllers/tableController.js';
 import { formController } from './controllers/formController.js';
+import { sortController } from './controllers/sortController.js';
 
 const init = () => {
     modalController();
     previewController(imageInput, preview);
     tableController();
     formController();
+    sortController();
 }
 
 init();

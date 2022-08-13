@@ -1,6 +1,6 @@
 import { categoryDataList, formBtn, formTitle, modalForm, preview } from "../elems/elems.js";
-import stateManger from "../state-manager/state-manager.js";
-import triggerManager from "../state-manager/triggerManager.js";
+import stateManager from "../managers/stateManager.js";
+import triggerManager from "../managers/triggerManager.js";
 import { showPreview } from "../controllers/previewController.js";
 import { SERVER_URI } from "../const.js";
 
@@ -11,11 +11,12 @@ const initCreatingForm = () => {
 }
 
 const initEditingForm = () => {
-    const editableProduct = stateManger.editableProduct.getValue();
+    const editableProduct = stateManager.editableProduct.getValue();
 
     formTitle.textContent = 'Изменить товар';
     formBtn.textContent = 'Изменить товар';
     
+    modalForm.id.value = editableProduct.id;
     modalForm.title.value = editableProduct.title;
     modalForm.category.value = editableProduct.category;
     modalForm.description.value = editableProduct.description;
@@ -23,9 +24,7 @@ const initEditingForm = () => {
     modalForm.price.value = editableProduct.price;
     modalForm.imagesave.value = editableProduct.image;
 
-    showPreview(`${SERVER_URI}${editableProduct.image}`)
-/*     preview.classList.add('d-block');
-    preview.src = `${SERVER_URI}${editableProduct.image}`; */
+    showPreview(`${SERVER_URI}${editableProduct.image}`);
 }
 
 export const renderCategory = (category) => {
@@ -43,7 +42,7 @@ const renderCategoryOptions = (categories) => {
 }
 
 export const initForm = () => {
-    const {categories} = stateManger;
+    const {categories} = stateManager;
     const {openCreatingProduct, openEditingProduct} = triggerManager;
 
     openCreatingProduct.subscribe(initCreatingForm);

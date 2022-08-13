@@ -1,27 +1,41 @@
 import { deleteProductRequest, getGoods } from "../API/serviceAPI.js";
-import stateManger from "../state-manager/state-manager.js";
-import { initTable } from "../view/tableView.js";
+import { changeProductElem, deleteProductElement, initTable } from "../view/tableView.js";
+import stateManager from "../managers/stateManager.js";
+import triggerManager from "../managers/triggerManager.js";
 
-export const deleteProduct = async (productID) => {
-    await deleteProductRequest(productID)
-    
-    stateManger.goods.setValue(stateManger.goods.getValue().filter(product => {
-        if(product.id !== productID) return product;
-    }));
+export const deleteProduct = async (goodsRow) => {
+    const goodsID = goodsRow.dataset.id;
+    const isDeleted = await deleteProductRequest(goodsID);
+    const {allGoods, visibleGoods} = stateManager;
+
+    if(isDeleted) {
+        allGoods.deleteItem(goodsID);
+        visibleGoods.deleteItem(goodsID);
+        deleteProductElement(goodsRow);
+    }
 }
 
 export const chooseProductItem = ({target}) => {
-    const {editableProduct, goods} = stateManger;
+    const {editableProduct, visibleGoods} = stateManager;
 
     if(!target.closest('.btn-delete')) {
-        editableProduct.setValue(goods.getValue().find(product => {
+        editableProduct.setValue(visibleGoods.getValue().find(product => {
             return product.id === target.closest('.table-goods-item').dataset.id;
         }));
         triggerManager.openEditingProduct.trigger();
     }
 }
 
+export const changeProduct = (product) => {
+    stateManager.allGoods.changeItem(product);
+    stateManager.visibleGoods.changeItem(product);
+    changeProductElem(product);
+}
+
 export const tableController = async() => {
+    const goods = await getGoods();
+
     initTable();
-    stateManger.goods.setValue(await getGoods());
+
+    stateManager.allGoods.setValue(goods);
 };

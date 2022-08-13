@@ -6,6 +6,4 @@ const triggerManager = {
     openEditingProduct: createTrigger()
 }
 
-window.triggerManager = triggerManager;
-
 export default triggerManager;

@@ -1,5 +1,5 @@
-import triggerManager from "../state-manager/triggerManager.js";
 import { modal, modalCloseBtn, creatingProductBtn } from "../elems/elems.js";
+import triggerManager from "../managers/triggerManager.js";
 
 const openModal = () => modal.classList.add('d-block');
 

@@ -11,3 +11,4 @@ export const imageInput = modalForm.image;
 export const categoryDataList = document.querySelector('#category');
 
 export const tableGoodsContainer = document.querySelector('.table-goods');
+export const wrapperSort = document.querySelector('.wrapper-sort');

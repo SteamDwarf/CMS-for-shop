@@ -7,7 +7,7 @@ const fetchData = (url) => {
     return data;
 }
 
-const postData = async (url, postingData) => {    
+const postData = (url, postingData) => {    
     const data = fetch(url, {
         method: 'POST',
         headers: {
@@ -21,12 +21,25 @@ const postData = async (url, postingData) => {
     return data;
 }
 
-const deleteData = async (url, itemID) => {
-    fetch(url, {
+const deleteData = (url, itemID) => {
+    const data = fetch(`${url}${itemID}`, {
         method: 'DELETE'
     })
     .then(response => response.ok ? response.json() : Promise.reject())
-    .catch(error => error);
+    .catch(error => console.error(error));
+
+    return data;
+}
+
+const editData = (url, editedData, itemID) => {
+    const data = fetch(`${url}${itemID}`, {
+        method: 'PATCH',
+        body: JSON.stringify(editedData)
+    })
+    .then(response => response.ok ? response.json() : Promise.reject())
+    .catch(error => console.error(error))
+
+    return data;
 }
 
 export const getGoods = () => {
@@ -42,6 +55,10 @@ export const postProduct = (data) => {
 }
 
 export const deleteProductRequest = (productID) => {
-    return deleteData(`${API_URI}/goods/${productID}`);
+    return deleteData(`${API_URI}/goods/`, productID);
+}
+
+export const editProductRequest = (editedData, productID) => {
+    return editData(`${API_URI}/goods/`, editedData, productID);
 }
 

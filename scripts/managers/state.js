@@ -13,7 +13,6 @@ export const createState = (initValue) => {
     const setValue = (newValue) => {
         value = newValue;
         notify();
-        console.log(value);
     }
 
     const getValue = () => value;
