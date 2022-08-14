@@ -1,5 +1,5 @@
 import { chooseProductItem, deleteProduct } from "../controllers/tableController.js";
-import { tableErrorContainer, tableGoodsContainer } from "../elems/elems.js";
+import { creatingProductBtn, tableErrorContainer, tableGoodsContainer, tableSpinner } from "../elems/elems.js";
 import { currencyFormatRUB } from "../utils/utils.js";
 import stateManager from "../managers/stateManager.js";
 import { useEffect } from "../managers/utils.js";
@@ -15,11 +15,11 @@ export const renderGoodsRow = ({id, title, category, price}) => {
             <td>${category}</td>
             <td class="text-end">${currencyFormatRUB(price)}</td>
             <td class="d-flex">
-            <button class="btn-table btn-delete">
-                <svg width="30" height="30">
-                    <use xlink:href="#delete" />
-                </svg>
-            </button>
+                <button class="btn-table btn-delete">
+                    <svg width="30" height="30">
+                        <use xlink:href="#delete" />
+                    </svg>
+                </button>
         </td>
     `;
 
@@ -35,6 +35,17 @@ export const renderErrorMessage = (error) => {
         </div>
     `;
 }
+
+export const sendingRequestTable = (isShow) => {
+    if(isShow) {
+        tableSpinner.classList.remove('visually-hidden');
+        creatingProductBtn.disabled = true;
+        return;
+    };
+
+    creatingProductBtn.disabled = false;
+    tableSpinner.classList.add('visually-hidden');
+} 
 
 const renderTable = (goods) => {
     tableGoodsContainer.innerHTML = '';

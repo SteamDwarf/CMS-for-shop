@@ -1,7 +1,7 @@
 import { editProductRequest, getCategories, postProduct } from "../API/serviceAPI.js"
 import { formErrorContainer, modalForm } from "../elems/elems.js";
 import { toBase64 } from "../utils/utils.js";
-import { initForm, renderFormError } from "../view/formView.js";
+import { initForm, renderFormError, sendingRequest } from "../view/formView.js";
 import stateManager from "../managers/stateManager.js";
 import triggerManager from "../managers/triggerManager.js";
 import { useEffect } from "../managers/utils.js";
@@ -59,7 +59,13 @@ const addNewProduct = async (e) => {
     }
 
     if(editableProduct.getValue()) {
-        editProductRequest(postingData, postingData.id, successPatchProduct, renderFormError);
+        editProductRequest({
+            editedData: postingData,
+            productID: postingData.id,
+            loadingFunc: sendingRequest,
+            successFunc: successPatchProduct,
+            errorFunc: renderFormError
+        })
 
     } else {
         if(!postingData.image) {
@@ -67,7 +73,12 @@ const addNewProduct = async (e) => {
             return;
         }
 
-        postProduct(postingData, successPostProduct, renderFormError);
+        postProduct({
+            data: postingData, 
+            loadingFunc: sendingRequest,
+            successFunc: successPostProduct, 
+            errorFunc: renderFormError
+        });
     }
 
 }
@@ -79,7 +90,7 @@ const clearForm = () => {
 }
 
 export const formController = () => {
-    getCategories();
+    getCategories({});
     initForm();
 
     useEffect(clearForm, [triggerManager.closingModal])

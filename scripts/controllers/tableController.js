@@ -1,5 +1,5 @@
 import { deleteProductRequest, getGoods } from "../API/serviceAPI.js";
-import { initTable, renderErrorMessage } from "../view/tableView.js";
+import { initTable, renderErrorMessage, sendingRequestTable } from "../view/tableView.js";
 import stateManager from "../managers/stateManager.js";
 import triggerManager from "../managers/triggerManager.js";
 
@@ -23,6 +23,6 @@ export const chooseProductItem = ({target}) => {
 
 
 export const tableController = () => {
-    getGoods(renderErrorMessage);
+    getGoods({loadingFunc: sendingRequestTable, errorFunc: renderErrorMessage});
     initTable();
 };
