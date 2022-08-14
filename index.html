@@ -15,8 +15,12 @@
   <div class="container">
     <h1 class="mb-3">Приложение для управления товарами</h1>
 
-    <button type="button" class="modal-open-btn btn btn-success d-block mb-3 ms-auto">Добавить товар</button>
-
+    <div class="table-header d-flex align-items-center justify-content-between mb-3">
+      <ul class="pagination"></ul>
+      <input type="text" class="filter-input form-control w-50" placeholder="Поиск">
+      <button type="button" class="modal-open-btn btn btn-success d-block">Добавить товар</button>
+    </div>
+  
     <div class="table-responsive">
       <table class="table table-bordered">
         <thead class="table-light wrapper-sort">
@@ -32,6 +36,7 @@
           
         </tbody>
       </table>
+      <div class="table-error-container text-center fs-4"></div>
 
       <div class="modal">
         <div class="modal-dialog">
@@ -74,6 +79,7 @@
               <button type="submit" class="btn btn-primary modal-submit-btn">Добавить товар</button>
             </div>
             
+            <div class="form-error-conatiner ps-3 pe-3"></div>
           </form>
           
         </div>

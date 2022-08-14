@@ -7,7 +7,11 @@ const stateManager = {
     categories: createState([]),
     editableProduct: createState(null),
     sortField: createState('id'),
-    sortDirection: createState('up')
+    sortDirection: createState('up'),
+    itemsPerPage: createState(15),
+    pages: createState(0),
+    curPage: createState(1),
+    filter: createState('')
 }
 
 export default stateManager;

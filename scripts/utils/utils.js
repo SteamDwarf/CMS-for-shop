@@ -16,3 +16,5 @@ export const currencyFormatRUB = (price) => {
         maximumFractionDigits: 0
     }).format(price);
 }
+
+export const compose = (...fns) => (...args) => fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0];

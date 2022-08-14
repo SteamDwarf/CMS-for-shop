@@ -11,8 +11,10 @@ export const createListState = () => {
     }
 
     const setValue = (newValue) => {
-        value = newValue;
-        notify();
+        if(value !== newValue) {
+            value = newValue;
+            notify();
+        }
     }
 
     const addNewItem = (newItem) => {
@@ -20,18 +22,22 @@ export const createListState = () => {
     }
 
     const changeItem = (item) => {
-        value.forEach(listItem => {
+        const filteredList = value.filter(storedItem => storedItem.id !== item.id);
+
+        setValue([...filteredList, item]);
+        /* value.forEach(listItem => {
             if(listItem.id === item.id) {
                 value[value.indexOf(listItem)] = item;
             }
-        });
+        }); */
     }
 
     const deleteItem = (itemID) => {
-        const deletableItem = value.find(item => item.id === itemID);
+        setValue(value.filter(storedItem => storedItem.id !== itemID));
+        /* const deletableItem = value.find(item => item.id === itemID);
         const deletableItemIndex = value.indexOf(deletableItem);
 
-        value.splice(deletableItemIndex, 1);
+        value.splice(deletableItemIndex, 1); */
     }
 
     const getValue = () => value;

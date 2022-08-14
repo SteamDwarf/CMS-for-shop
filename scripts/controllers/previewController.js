@@ -1,6 +1,7 @@
 import { toBase64 } from "../utils/utils.js";
 import { preview } from "../elems/elems.js";
 import triggerManager from "../managers/triggerManager.js";
+import { useEffect } from "../managers/utils.js";
 
 export const showPreview = (file) => {
     preview.classList.add('d-block');
@@ -22,7 +23,9 @@ const hidePreview = () => {
 }
 
 export const previewController = (imageInput) => {
-    triggerManager.closingModal.subscribe(() => hidePreview(preview));
+    const {closingModal} = triggerManager;
+
+    useEffect(hidePreview, [closingModal]);
 
     imageInput.addEventListener('change', () => {
         if(imageInput.files[0]) {

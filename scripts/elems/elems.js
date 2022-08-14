@@ -9,6 +9,11 @@ export const previewWrapper = document.querySelector('.wrapper-preview');
 export const preview = document.querySelector('.preview');
 export const imageInput = modalForm.image;
 export const categoryDataList = document.querySelector('#category');
+export const formErrorContainer = document.querySelector('.form-error-conatiner');
 
 export const tableGoodsContainer = document.querySelector('.table-goods');
+export const tableErrorContainer = document.querySelector('.table-error-container');
 export const wrapperSort = document.querySelector('.wrapper-sort');
+
+export const pagesContainer = document.querySelector('.pagination');
+export const filterInput = document.querySelector('.filter-input');

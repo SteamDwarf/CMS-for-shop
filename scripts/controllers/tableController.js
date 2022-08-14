@@ -1,18 +1,13 @@
 import { deleteProductRequest, getGoods } from "../API/serviceAPI.js";
-import { changeProductElem, deleteProductElement, initTable } from "../view/tableView.js";
+import { initTable, renderErrorMessage } from "../view/tableView.js";
 import stateManager from "../managers/stateManager.js";
 import triggerManager from "../managers/triggerManager.js";
 
-export const deleteProduct = async (goodsRow) => {
+export const deleteProduct = (goodsRow) => {
     const goodsID = goodsRow.dataset.id;
-    const isDeleted = await deleteProductRequest(goodsID);
-    const {allGoods, visibleGoods} = stateManager;
+    const {allGoods} = stateManager;
 
-    if(isDeleted) {
-        allGoods.deleteItem(goodsID);
-        visibleGoods.deleteItem(goodsID);
-        deleteProductElement(goodsRow);
-    }
+    deleteProductRequest(goodsID, () => allGoods.deleteItem(goodsID));
 }
 
 export const chooseProductItem = ({target}) => {
@@ -26,16 +21,8 @@ export const chooseProductItem = ({target}) => {
     }
 }
 
-export const changeProduct = (product) => {
-    stateManager.allGoods.changeItem(product);
-    stateManager.visibleGoods.changeItem(product);
-    changeProductElem(product);
-}
 
-export const tableController = async() => {
-    const goods = await getGoods();
-
+export const tableController = () => {
+    getGoods(renderErrorMessage);
     initTable();
-
-    stateManager.allGoods.setValue(goods);
 };

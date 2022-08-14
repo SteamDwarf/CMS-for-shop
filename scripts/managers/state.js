@@ -11,8 +11,10 @@ export const createState = (initValue) => {
     }
 
     const setValue = (newValue) => {
-        value = newValue;
-        notify();
+        if(value !== newValue) {
+            value = newValue;
+            notify();
+        }
     }
 
     const getValue = () => value;

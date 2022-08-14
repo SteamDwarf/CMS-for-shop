@@ -1,10 +1,10 @@
 import { editProductRequest, getCategories, postProduct } from "../API/serviceAPI.js"
-import { modalForm } from "../elems/elems.js";
+import { formErrorContainer, modalForm } from "../elems/elems.js";
 import { toBase64 } from "../utils/utils.js";
-import { initForm } from "../view/formView.js";
+import { initForm, renderFormError } from "../view/formView.js";
 import stateManager from "../managers/stateManager.js";
 import triggerManager from "../managers/triggerManager.js";
-import { changeProduct } from "./tableController.js";
+import { useEffect } from "../managers/utils.js";
 
 const addNewCategory = (category) => {
     const categories = stateManager.categories.getValue();
@@ -16,16 +16,37 @@ const addNewCategory = (category) => {
     return [...categories, category];
 }
 
-//TODO красиво оформить код создания нового товара и его редактирования
+
+const succesFormSubmit = (product) => {
+    const {categories} = stateManager;
+    const {closingModal} = triggerManager;
+
+    categories.setValue(addNewCategory(product.category));
+    closingModal.trigger();
+}
+
+const successPatchProduct = (product) => {
+    const {allGoods, editableProduct} = stateManager;
+    
+    allGoods.changeItem(product);
+    editableProduct.setValue(null);
+
+    succesFormSubmit(product)
+}
+
+const successPostProduct = (product) => {
+    const {allGoods} = stateManager;
+
+    allGoods.addNewItem(product);
+    succesFormSubmit(product)
+}
 
 const addNewProduct = async (e) => {
     e.preventDefault();
 
     const formData = [...new FormData(modalForm)];
     const postingData = {};
-    const {allGoods, categories, editableProduct} = stateManager;
-    const {closingModal} = triggerManager;
-    let product = {}
+    const {editableProduct} = stateManager;
 
     formData.forEach(async ([key, value]) => {
         if(key) postingData[key] = value;
@@ -38,34 +59,30 @@ const addNewProduct = async (e) => {
     }
 
     if(editableProduct.getValue()) {
-        product = await editProductRequest(postingData, postingData.id);
-        changeProduct(product);
-        editableProduct.setValue(null);
+        editProductRequest(postingData, postingData.id, successPatchProduct, renderFormError);
 
     } else {
         if(!postingData.image) {
             alert('Добавьте изображение');
             return;
         }
-        product = await postProduct(postingData);
-        allGoods.addNewItem(product);
-    }
-    
-    categories.setValue(addNewCategory(product.category));
-    closingModal.trigger();
 
-    return;
+        postProduct(postingData, successPostProduct, renderFormError);
+    }
+
 }
 
 const clearForm = () => {
     modalForm.reset();
+    formErrorContainer.innerHTML = '';
     stateManager.editableProduct.setValue(null);
 }
 
-export const formController = async () => {
+export const formController = () => {
+    getCategories();
     initForm();
-    stateManager.categories.setValue(await getCategories());
-    triggerManager.closingModal.subscribe(clearForm);
+
+    useEffect(clearForm, [triggerManager.closingModal])
 
     modalForm.addEventListener('submit', addNewProduct);
 }

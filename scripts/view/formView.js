@@ -3,6 +3,7 @@ import stateManager from "../managers/stateManager.js";
 import triggerManager from "../managers/triggerManager.js";
 import { showPreview } from "../controllers/previewController.js";
 import { SERVER_URI } from "../const.js";
+import { formErrorContainer } from "../elems/elems.js";
 
 
 const initCreatingForm = () => {
@@ -37,8 +38,15 @@ export const renderCategory = (category) => {
 
 const renderCategoryOptions = (categories) => {
     categoryDataList.innerHTML = '';
-
     categories.forEach(category => renderCategory(category));
+}
+
+export const renderFormError = (error) => {
+    formErrorContainer.innerHTML = `
+        <div class="alert alert-danger w-100 text-center" role="alert">
+            <b>${error.status}:</b> ${error.statusText}
+        </div>
+    `;
 }
 
 export const initForm = () => {

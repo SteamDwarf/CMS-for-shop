@@ -39,28 +39,24 @@ const sortingStrings = (list, field) => {
     return list.sort((a, b) => a[field].localeCompare(b[field]));
 }
 
-const sortingData = () => {
-    const {allGoods, visibleGoods} = stateManager;
+export const sortingData = (products) => {
     const sortedField = stateManager.sortField.getValue();
     const sortedDirection = stateManager.sortDirection.getValue();
     let sortedList = []
 
     if(sortedField === 'id' || sortedField === 'price') {
-        sortedList = sortingNumbers(allGoods.getValue(), sortedField);
+        sortedList = sortingNumbers(products, sortedField);
     }
 
     if(sortedField === 'title' || sortedField === 'category') {
-        sortedList = sortingStrings(allGoods.getValue(), sortedField);
+        sortedList = sortingStrings(products, sortedField);
     }
 
     if(sortedDirection === 'down') sortedList.reverse();
 
-    visibleGoods.setValue(sortedList);
+    return sortedList;
 }
 
 export const sortController = () => {
     wrapperSort.addEventListener('click', changeSortSettings);
-    stateManager.allGoods.subscribe(sortingData);
-    stateManager.sortDirection.subscribe(sortingData);
-    stateManager.sortField.subscribe(sortingData);
 }
