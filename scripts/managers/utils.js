@@ -1,1 +1,0 @@
-export const useEffect = (func, states) => states.forEach(state => state.subscribe(func));
