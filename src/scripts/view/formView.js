@@ -1,10 +1,10 @@
-import { categoryDataList, formBtn, formSpinner, formTitle, modalForm, preview } from "../elems/elems.js";
+import { categoryDataList, formBtn, formSpinner, formTitle, modalForm} from "../elems/elems.js";
 import stateManager from "../managers/stateManager.js";
 import triggerManager from "../managers/triggerManager.js";
 import { showPreview } from "../controllers/previewController.js";
 import { SERVER_URI } from "../const.js";
 import { formErrorContainer } from "../elems/elems.js";
-
+import { renderErrorMessage, requestLoadingStatus} from "./statusView.js";
 
 const initCreatingForm = () => {
     formTitle.textContent = 'Добавить новый товар';
@@ -42,22 +42,11 @@ const renderCategoryOptions = (categories) => {
 }
 
 export const renderFormError = (error) => {
-    formErrorContainer.innerHTML = `
-        <div class="alert alert-danger w-100 text-center" role="alert">
-            <b>${error.status}:</b> ${error.statusText}
-        </div>
-    `;
+    renderErrorMessage(formErrorContainer, error);
 }
 
-export const sendingRequest = (isShow) => {
-    if(isShow) {
-        formSpinner.classList.remove('visually-hidden');
-        formBtn.disabled = true;
-        return;
-    };
-
-    formBtn.disabled = false;
-    formSpinner.classList.add('visually-hidden');
+export const productChangingStatus = (isLoading) => {
+    requestLoadingStatus(formSpinner, formBtn, isLoading);
 }
 
 export const initForm = () => {

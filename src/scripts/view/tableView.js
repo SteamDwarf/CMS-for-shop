@@ -3,6 +3,7 @@ import { creatingProductBtn, tableErrorContainer, tableGoodsContainer, tableSpin
 import { currencyFormatRUB } from "../utils/utils.js";
 import stateManager from "../managers/stateManager.js";
 import { useEffect } from "../managers/utils.js";
+import { renderErrorMessage, requestLoadingStatus} from "./statusView.js";
 
 export const renderGoodsRow = ({id, title, category, price}) => {
     const goodsRow = document.createElement('tr');
@@ -14,12 +15,13 @@ export const renderGoodsRow = ({id, title, category, price}) => {
             <td>${title}</td>
             <td>${category}</td>
             <td class="text-end">${currencyFormatRUB(price)}</td>
-            <td class="d-flex">
+            <td class="d-flex align-items-center justify-content-center">
                 <button class="btn-table btn-delete">
                     <svg width="30" height="30">
                         <use xlink:href="#delete" />
                     </svg>
                 </button>
+                <div class="product-spinner spinner-border spinner-border-sm text-primary mx-auto visually-hidden" role="status"></div>
         </td>
     `;
 
@@ -28,24 +30,21 @@ export const renderGoodsRow = ({id, title, category, price}) => {
     goodsRow.querySelector('.btn-delete').addEventListener('click', () => deleteProduct(goodsRow));
 }
 
-export const renderErrorMessage = (error) => {
-    tableErrorContainer.innerHTML = `
-        <div class="alert alert-danger w-100" role="alert">
-            <b>${error.status}:</b> ${error.statusText}
-        </div>
-    `;
+export const renderTableError = (error) => {
+    renderErrorMessage(tableErrorContainer, error);
 }
 
-export const sendingRequestTable = (isShow) => {
-    if(isShow) {
-        tableSpinner.classList.remove('visually-hidden');
-        creatingProductBtn.disabled = true;
-        return;
-    };
+export const productFetchingStatus = (isLoading) => {
+    requestLoadingStatus(tableSpinner, creatingProductBtn, isLoading);
+}
 
-    creatingProductBtn.disabled = false;
-    tableSpinner.classList.add('visually-hidden');
-} 
+export const productDeletingStatus = (productElement, isInProcess) => {
+    const productSpinner = productElement.querySelector('.product-spinner');
+    const deleteProductBtn = productElement.querySelector('.btn-delete');
+
+    requestLoadingStatus(productSpinner, deleteProductBtn, isInProcess);
+}
+
 
 const renderTable = (goods) => {
     tableGoodsContainer.innerHTML = '';

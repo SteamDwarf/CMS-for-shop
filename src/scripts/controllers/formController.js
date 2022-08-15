@@ -1,7 +1,7 @@
 import { editProductRequest, getCategories, postProduct } from "../API/serviceAPI.js"
 import { formErrorContainer, modalForm } from "../elems/elems.js";
 import { toBase64 } from "../utils/utils.js";
-import { initForm, renderFormError, sendingRequest } from "../view/formView.js";
+import { initForm, productChangingStatus, renderFormError } from "../view/formView.js";
 import stateManager from "../managers/stateManager.js";
 import triggerManager from "../managers/triggerManager.js";
 import { useEffect } from "../managers/utils.js";
@@ -62,7 +62,7 @@ const addNewProduct = async (e) => {
         editProductRequest({
             editedData: postingData,
             productID: postingData.id,
-            loadingFunc: sendingRequest,
+            loadingFunc: productChangingStatus,
             successFunc: successPatchProduct,
             errorFunc: renderFormError
         })
@@ -75,7 +75,7 @@ const addNewProduct = async (e) => {
 
         postProduct({
             data: postingData, 
-            loadingFunc: sendingRequest,
+            loadingFunc: productChangingStatus,
             successFunc: successPostProduct, 
             errorFunc: renderFormError
         });

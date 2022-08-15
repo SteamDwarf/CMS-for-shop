@@ -1,3 +1,6 @@
+
+import '../css/bootstrap.min.css';
+import '../css/style.css';
 import { modalController } from './controllers/modalController.js';
 import { imageInput, preview } from './elems/elems.js';
 import { previewController } from './controllers/previewController.js';

@@ -1,13 +1,17 @@
 import { deleteProductRequest, getGoods } from "../API/serviceAPI.js";
-import { initTable, renderErrorMessage, sendingRequestTable } from "../view/tableView.js";
+import { initTable, productDeletingStatus, productFetchingStatus, renderTableError } from "../view/tableView.js";
 import stateManager from "../managers/stateManager.js";
 import triggerManager from "../managers/triggerManager.js";
 
-export const deleteProduct = (goodsRow) => {
-    const goodsID = goodsRow.dataset.id;
+export const deleteProduct = (productRow) => {
+    const productID = productRow.dataset.id;
     const {allGoods} = stateManager;
 
-    deleteProductRequest(goodsID, () => allGoods.deleteItem(goodsID));
+    deleteProductRequest({
+        productID, 
+        loadingFunc: (isInProcess) => productDeletingStatus(productRow, isInProcess),
+        successFunc: () => allGoods.deleteItem(productID)
+    });
 }
 
 export const chooseProductItem = ({target}) => {
@@ -23,6 +27,6 @@ export const chooseProductItem = ({target}) => {
 
 
 export const tableController = () => {
-    getGoods({loadingFunc: sendingRequestTable, errorFunc: renderErrorMessage});
+    getGoods({loadingFunc: productFetchingStatus, errorFunc: renderTableError});
     initTable();
 };
