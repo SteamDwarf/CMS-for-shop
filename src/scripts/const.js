@@ -1,2 +1,2 @@
-export const API_URI = 'https://shop-server-cms.herokuapp.com/api';
-export const SERVER_URI = 'https://shop-server-cms.herokuapp.com/';
+export const API_URI = 'https://tech-shop-api.onrender.com/api';
+export const SERVER_URI = 'https://tech-shop-api.onrender.com/';

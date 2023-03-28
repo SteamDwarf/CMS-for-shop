@@ -12,16 +12,16 @@ export const renderGoodsRow = ({id, title, category, price}) => {
     goodsRow.dataset.id = id;
     goodsRow.innerHTML = `
         <td>${id}</td>
-            <td>${title}</td>
-            <td>${category}</td>
-            <td class="text-end">${currencyFormatRUB(price)}</td>
-            <td class="d-flex align-items-center justify-content-center">
-                <button class="btn-table btn-delete">
-                    <svg width="30" height="30">
-                        <use xlink:href="#delete" />
-                    </svg>
-                </button>
-                <div class="product-spinner spinner-border spinner-border-sm text-primary mx-auto visually-hidden" role="status"></div>
+        <td>${title}</td>
+        <td>${category}</td>
+        <td class="text-end">${currencyFormatRUB(price)}</td>
+        <td class="d-flex align-items-center justify-content-center">
+            <button class="btn-table btn-delete">
+                <svg width="30" height="30">
+                    <use xlink:href="#delete" />
+                </svg>
+            </button>
+            <div class="product-spinner spinner-border spinner-border-sm text-primary mx-auto visually-hidden" role="status"></div>
         </td>
     `;
 
